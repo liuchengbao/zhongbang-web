@@ -1,9 +1,34 @@
+/*
+ * @Author: chengbao.liu
+ * @Date: 2022-02-21 14:42:32
+ * @LastEditTime: 2022-03-09 17:04:28
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /zhongbang-web/pages/index.tsx
+ */
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useState } from 'react'
+import styles from '../styles/Home.module.scss'
+import { main_service, my_company, product_list_one } from './api/common_data'
+import {
+  companyContentProps,
+  companyProps,
+  mainServiceProps,
+  productProps,
+} from './index.data'
 
 const Home: NextPage = () => {
+  const [companyContent, setCompanyContent] = useState<companyProps>(
+    my_company[0]
+  )
+
+  // 切换我的公司所处状态可以做的服务内容
+  const handleMouseOver = (item: companyProps) => {
+    setCompanyContent(item)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,58 +38,355 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <div className={styles.head}>
+          <div className={(styles.main_container, styles.head_container)}>
+            12222
+          </div>
+        </div>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
+        <div className={styles.main_service_box}>
+          <div className={styles.main_service}>
+            {main_service.map((item: mainServiceProps, idx: number) => (
+              <div
+                key={'mainservice' + idx}
+                className={styles.main_service_item}
+              >
+                <Image src={item.icon} alt="企快办" width={60} height={60} />
+                <div>
+                  <span className={styles.main_service_item_title}>
+                    {item.title}
+                  </span>
+                  <span className={styles.main_service_item_text}>
+                    {item.text}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <div className={styles.company_box}>
+          <div className={styles.company}>
+            {my_company.map((item: companyProps, idx: number) => (
+              <div
+                key={'company' + idx}
+                className={styles.company_item}
+                onMouseOver={() => handleMouseOver(item)}
+              >
+                <div className={styles.company_item_title}>{item.title}</div>
+              </div>
+            ))}
+          </div>
+          <div className={styles.company_item_content}>
+            {companyContent.content.map(
+              (item: companyContentProps, idx: number) => (
+                <div key={'companyContent' + idx}>
+                  <Image
+                    src={item.icon}
+                    className={styles.company_item_content_icon}
+                    alt="企快办"
+                    width={126}
+                    height={126}
+                  />
+                  <span className={styles.company_item_content_text}>
+                    {item.text}
+                  </span>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product1_left}>
+              <p>科技项目申报</p>
+              <span>中小企业公共服务示范平台</span>
+              <span>十六年行业经验</span>
+              <div>
+                <span className={styles.product_tag}>
+                  专精特新中小企业认定服务
+                </span>
+                <span className={styles.product_tag}>国家高新企业认定</span>
+              </div>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product1' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product1tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product2_left}>
+              <p>工商服务</p>
+              <span>企业注册、变更、注销...</span>
+              <span>一站式解决方案</span>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product2' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product2tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product3_left}>
+              <p>财税服务</p>
+              <span>专业会计团队助力</span>
+              <span>省心省力</span>
+              <div>
+                <span className={styles.product_tag}>一般纳税人服务</span>
+                <span className={styles.product_tag}>更多服务</span>
+              </div>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product3' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product3tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product4_left}>
+              <p>知识产权</p>
+              <span>您的商标、专利、产品</span>
+              <span>快速保护</span>
+              <div>
+                <span className={styles.product_tag}>发明专利申请</span>
+                <span className={styles.product_tag}>商标撤三申请</span>
+                <span className={styles.product_tag}>商标异议申请</span>
+              </div>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product4' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product4tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product5_left}>
+              <p>资质服务</p>
+              <span>快速高通过率办理</span>
+              <span>让你轻松拿证</span>
+              <div>
+                <span className={styles.product_tag}>SP经营许可证</span>
+                <span className={styles.product_tag}>
+                  互联网药品信息服务资格许可证
+                </span>
+                <span className={styles.product_tag}>食品经营许可证</span>
+                <span className={styles.product_tag}>
+                  广播电视节目制作经营许可证
+                </span>
+              </div>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product5' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product5tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.product_box}>
+          <div className={styles.product_content}>
+            <div className={styles.product6_left}>
+              <p>认证服务</p>
+              <span>高新、体系认证、评级证书...</span>
+              <span>一站式解决方案</span>
+            </div>
+            <div className={styles.product_right}>
+              {product_list_one.map((item: productProps, idx: number) => (
+                <div
+                  key={'product6' + idx}
+                  className={styles.product_right_item}
+                >
+                  <div>
+                    <div>
+                      <p className={styles.product_right_item_title}>
+                        {item.title}
+                      </p>
+                      <span className={styles.product_right_item_detail}>
+                        {item.detail}
+                      </span>
+                    </div>
+                    <div className={styles.product_right_item_tags}>
+                      {item.tags.map((i: string, index: number) => (
+                        <span key={'product6tag' + index}>{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.product_right_item_price}>
+                    <span>
+                      {item.price === '面议' ? '面议' : '¥ ' + item.price}
+                    </span>
+                    {item.price !== '面议' && (
+                      <span className={styles.product_right_item_price_tag}>
+                        起
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <footer className={styles.footer}></footer>
     </div>
   )
 }
