@@ -1,7 +1,7 @@
 /*
  * @Author: chengbao.liu
  * @Date: 2022-02-21 14:42:32
- * @LastEditTime: 2022-03-09 17:04:28
+ * @LastEditTime: 2022-03-14 17:00:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /zhongbang-web/pages/index.tsx
@@ -11,11 +11,29 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.scss'
-import { main_service, my_company, product_list_one } from './api/common_data'
+import {
+  footer_content,
+  hot_business,
+  information,
+  main_service,
+  my_company,
+  nav_list,
+  partner,
+  product_list_five,
+  product_list_four,
+  product_list_one,
+  product_list_six,
+  product_list_three,
+  product_list_two,
+} from './api/common_data'
 import {
   companyContentProps,
   companyProps,
+  footerContentProps,
+  informationContentProps,
+  informationProps,
   mainServiceProps,
+  partnerProps,
   productProps,
 } from './index.data'
 
@@ -23,10 +41,19 @@ const Home: NextPage = () => {
   const [companyContent, setCompanyContent] = useState<companyProps>(
     my_company[0]
   )
+  const [informationContent, setInformationContent] =
+    useState<informationProps>(information[0])
+  const [checkInformation, setCheckInformation] = useState<string>('工商服务')
 
   // 切换我的公司所处状态可以做的服务内容
   const handleMouseOver = (item: companyProps) => {
     setCompanyContent(item)
+  }
+
+  // 切换资讯的内容
+  const handleInformationClick = (item: informationProps) => {
+    setInformationContent(item)
+    setCheckInformation(item.name)
   }
 
   return (
@@ -38,9 +65,19 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.head}>
-          <div className={(styles.main_container, styles.head_container)}>
-            12222
+        <div className={styles.head_box}>
+          <div className={styles.head}>
+            <Image
+              src={'/image/article_cover1.jpeg'}
+              alt="噜噜尼企服"
+              width={100}
+              height={60}
+            />
+            <div className={styles.head_nav}>
+              {nav_list.map((item: any, idx: number) => (
+                <span key={'nag_list' + idx}>{item.title}</span>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -51,7 +88,12 @@ const Home: NextPage = () => {
                 key={'mainservice' + idx}
                 className={styles.main_service_item}
               >
-                <Image src={item.icon} alt="企快办" width={60} height={60} />
+                <Image
+                  src={item.icon}
+                  alt="噜噜尼企服"
+                  width={60}
+                  height={60}
+                />
                 <div>
                   <span className={styles.main_service_item_title}>
                     {item.title}
@@ -84,7 +126,7 @@ const Home: NextPage = () => {
                   <Image
                     src={item.icon}
                     className={styles.company_item_content_icon}
-                    alt="企快办"
+                    alt="噜噜尼企服"
                     width={126}
                     height={126}
                   />
@@ -154,7 +196,7 @@ const Home: NextPage = () => {
               <span>一站式解决方案</span>
             </div>
             <div className={styles.product_right}>
-              {product_list_one.map((item: productProps, idx: number) => (
+              {product_list_two.map((item: productProps, idx: number) => (
                 <div
                   key={'product2' + idx}
                   className={styles.product_right_item}
@@ -202,7 +244,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.product_right}>
-              {product_list_one.map((item: productProps, idx: number) => (
+              {product_list_three.map((item: productProps, idx: number) => (
                 <div
                   key={'product3' + idx}
                   className={styles.product_right_item}
@@ -251,7 +293,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.product_right}>
-              {product_list_one.map((item: productProps, idx: number) => (
+              {product_list_four.map((item: productProps, idx: number) => (
                 <div
                   key={'product4' + idx}
                   className={styles.product_right_item}
@@ -305,7 +347,7 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className={styles.product_right}>
-              {product_list_one.map((item: productProps, idx: number) => (
+              {product_list_five.map((item: productProps, idx: number) => (
                 <div
                   key={'product5' + idx}
                   className={styles.product_right_item}
@@ -349,7 +391,7 @@ const Home: NextPage = () => {
               <span>一站式解决方案</span>
             </div>
             <div className={styles.product_right}>
-              {product_list_one.map((item: productProps, idx: number) => (
+              {product_list_six.map((item: productProps, idx: number) => (
                 <div
                   key={'product6' + idx}
                   className={styles.product_right_item}
@@ -384,9 +426,131 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
+        <div className={styles.information_box}>
+          <div>
+            <div className={styles.information}>
+              {information.map((item: informationProps, idx: number) => (
+                <div
+                  key={'information' + idx}
+                  className={styles.information_item}
+                  onClick={() => handleInformationClick(item)}
+                  style={{
+                    background:
+                      checkInformation === item.name ? '#FFF' : '#F9F9F9',
+                  }}
+                >
+                  <div className={styles.information_item_title}>
+                    {item.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={styles.information_item_content}>
+              {informationContent.content.map(
+                (item: informationContentProps, idx: number) => (
+                  <div key={'informationContent' + idx}>
+                    <Image
+                      src={item.cover}
+                      className={styles.information_item_content_icon}
+                      alt="噜噜尼企服"
+                      width={148}
+                      height={84}
+                    />
+                    <div className={styles.information_item_content_right}>
+                      <span className={styles.information_item_content_text}>
+                        {item.title}
+                      </span>
+                      <span className={styles.information_item_content_intro}>
+                        {item.intro}
+                      </span>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.partner_box}>
+          <div className={styles.partner_title}>我们服务过的企业</div>
+          <div className={styles.partner}>
+            {partner.map((item: partnerProps, idx: number) => (
+              <div key={'partner' + idx} className={styles.partner_item}>
+                <Image
+                  src={item.logo}
+                  alt="噜噜尼企服"
+                  height={item.height}
+                  width={item.width}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </main>
 
-      <footer className={styles.footer}></footer>
+      <footer className={styles.footer_box}>
+        <div className={styles.footer}>
+          <div className={styles.footer_top}>
+            <div className={styles.footer_top_item}>
+              <span className={styles.footer_top_title}>噜噜尼</span>
+              <div>
+                <span>客服热线</span>
+                <span>400-123-456</span>
+              </div>
+              <div>
+                <span>客服邮箱</span>
+                <span>1601807915@qq.com</span>
+              </div>
+              <div className={styles.footer_top_item_contact}>
+                <span>媒体采访</span>
+                <span>1601807915@qq.com</span>
+              </div>
+              <div>
+                <span>商务合作</span>
+                <span>1601807915@qq.com</span>
+              </div>
+            </div>
+
+            {footer_content.map((item: footerContentProps, idx: number) => (
+              <div
+                className={styles.footer_top_item}
+                key={'footer_content' + idx}
+              >
+                <span className={styles.footer_top_title}>{item.title}</span>
+                {item.list.map(
+                  (item: { title: string; url: string }, index: number) => (
+                    <div key={'footer_content_list' + idx + index}>
+                      <span>{item.title}</span>
+                    </div>
+                  )
+                )}
+              </div>
+            ))}
+
+            <div className={styles.footer_work_time}>
+              <p>400-123-456</p>
+              <p>工作时间: 9:00-18:00</p>
+            </div>
+          </div>
+          <div className={styles.footer_business}>
+            <span>热门业务：</span>
+            <div className={styles.footer_business_content}>
+              {hot_business.map(
+                (item: { title: string; url: string }, idx: number) => (
+                  <span key={'hot_business' + idx}>{item.title}</span>
+                )
+              )}
+            </div>
+          </div>
+          <div className={styles.footer_bottom}>
+            <span>
+              @2018-2022·上海噜噜尼企业咨询管理有限公司·版权所有ICP证：沪ICP备18026377号-1·
+            </span>
+            <span>沪公网安备 33019902000258号</span>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

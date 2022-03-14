@@ -20,3 +20,25 @@ export interface productProps {
   tags: string[]
   price: string
 }
+
+export interface informationContentProps {
+  cover: string
+  title: string
+  intro: string
+}
+
+export interface informationProps {
+  name: string
+  content: informationContentProps[]
+}
+
+export interface partnerProps {
+  logo: string
+  width: number
+  height: number
+}
+
+export interface footerContentProps {
+  title: string
+  list: { title: string; url: string }[]
+}
