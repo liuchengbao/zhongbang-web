@@ -1,7 +1,7 @@
 /*
  * @Author: chengbao.liu
  * @Date: 2022-02-21 14:42:32
- * @LastEditTime: 2022-03-14 17:00:29
+ * @LastEditTime: 2022-03-18 15:11:27
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /zhongbang-web/pages/index.tsx
@@ -12,19 +12,26 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.scss'
 import {
+  certification,
+  financial,
   footer_content,
   hot_business,
+  industrial,
   information,
   main_service,
   my_company,
   nav_list,
   partner,
+  patent_nav,
   product_list_five,
   product_list_four,
   product_list_one,
   product_list_six,
   product_list_three,
   product_list_two,
+  qualification,
+  trademark,
+  web_nav,
 } from './api/common_data'
 import {
   companyContentProps,
@@ -35,6 +42,7 @@ import {
   mainServiceProps,
   partnerProps,
   productProps,
+  webNavProps,
 } from './index.data'
 
 const Home: NextPage = () => {
@@ -44,6 +52,8 @@ const Home: NextPage = () => {
   const [informationContent, setInformationContent] =
     useState<informationProps>(information[0])
   const [checkInformation, setCheckInformation] = useState<string>('工商服务')
+  const [navContent, setNavContent] = useState<webNavProps[]>(web_nav)
+  const [activeNav, setActiveNav] = useState<string | null>(null)
 
   // 切换我的公司所处状态可以做的服务内容
   const handleMouseOver = (item: companyProps) => {
@@ -54,6 +64,32 @@ const Home: NextPage = () => {
   const handleInformationClick = (item: informationProps) => {
     setInformationContent(item)
     setCheckInformation(item.name)
+  }
+
+  // 切换导航栏的内容
+  const handleNavMouseOver = (name: string) => {
+    setActiveNav(name)
+    if (name === '网站导航') {
+      setNavContent(web_nav)
+    } else if (name === '科技项目申报') {
+      setNavContent(patent_nav)
+    } else if (name === '版权专利') {
+      setNavContent(trademark)
+    } else if (name === '商标服务') {
+      setNavContent(industrial)
+    } else if (name === '财税服务') {
+      setNavContent(financial)
+    } else if (name === '认证服务') {
+      setNavContent(certification)
+    } else if (name === '资质许可') {
+      setNavContent(qualification)
+    } else if (name === '服务热线: 400-123-456') {
+      setActiveNav(null)
+    }
+  }
+
+  const handleNavContentMouseOver = () => {
+    setActiveNav(activeNav)
   }
 
   return (
@@ -74,10 +110,41 @@ const Home: NextPage = () => {
               height={60}
             />
             <div className={styles.head_nav}>
-              {nav_list.map((item: any, idx: number) => (
-                <span key={'nag_list' + idx}>{item.title}</span>
+              {nav_list.map((item: { title: string }, idx: number) => (
+                <span
+                  key={'nag_list' + idx}
+                  className={
+                    activeNav === item.title ? styles.head_nav_active : ''
+                  }
+                  onMouseOver={() => handleNavMouseOver(item.title)}
+                >
+                  {item.title}
+                </span>
               ))}
             </div>
+            {activeNav && (
+              <div
+                className={styles.head_nav_modal}
+                onMouseOver={() => handleNavContentMouseOver()}
+                onMouseLeave={() => setActiveNav(null)}
+              >
+                {navContent.map((item: webNavProps, idx: number) => (
+                  <div
+                    key={'web_nav' + idx}
+                    className={styles.head_nav_modal_item}
+                  >
+                    <span>{item.name}</span>
+                    <div className={styles.head_nav_modal_item_right}>
+                      {item.list.map(
+                        (i: { title: string; url: string }, index: number) => (
+                          <span key={'web_nav_list' + index}>{i.title}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

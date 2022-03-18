@@ -42,3 +42,8 @@ export interface footerContentProps {
   title: string
   list: { title: string; url: string }[]
 }
+
+export interface webNavProps {
+  name: string
+  list: { title: string; url: string }[]
+}
